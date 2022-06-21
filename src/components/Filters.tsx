@@ -16,14 +16,6 @@ import FormLabel from "@mui/material/FormLabel";
 function Filters() {
   return (
     <div>
-      <Divider />
-      <Typography
-        className="text-center text-blue-400 font-bold my-2"
-        variant="h6"
-        component="h3"
-      >
-        Filters
-      </Typography>
       <TextField
         fullWidth
         label="Search"
