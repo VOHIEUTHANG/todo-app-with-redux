@@ -1,3 +1,4 @@
+import { filterType } from "../interface/type";
 const initState = {
   filters: {
     search: "",
@@ -5,11 +6,12 @@ const initState = {
     priority: [],
   },
   todoList: [
-    { id: 1, name: "Learn React", priority: "hight", completed: false },
+    { id: 1, name: "Learn React", priority: "high", completed: true },
     { id: 2, name: "Learn NodeJS", priority: "medium", completed: false },
     { id: 3, name: "Learn Redux", priority: "low", completed: true },
   ],
 };
+
 const reducers = (
   state = initState,
   actions: { payload: any; type: string }

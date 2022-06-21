@@ -1,9 +1,8 @@
-import { createStore } from "redux";
-import { logger } from "./logger";
+import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./reducers";
-import { composeWithDevTools } from "redux-devtools-extension";
 
-const composedEnhancers = composeWithDevTools();
+const store = configureStore({
+  reducer: rootReducer,
+});
 
-const store = createStore(logger(rootReducer), composedEnhancers);
 export default store;

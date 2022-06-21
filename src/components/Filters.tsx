@@ -1,25 +1,39 @@
-import React from "react";
+import { useState } from "react";
 import {
   Autocomplete,
-  TextField,
   InputAdornment,
-  Divider,
+  TextField,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  FormLabel,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { Typography } from "@mui/material";
+import { useDispatch } from "react-redux";
 
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
+import { statusType, priotityType } from "../interface/type";
 
 function Filters() {
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState<statusType>("all");
+  const [priority, setPriority] = useState<priotityType[]>([]);
+  const dispatch = useDispatch();
+
+  const searchHandler = (e: any) => {
+    setSearch(e.target.value);
+  };
+  const statusSelectedHandler = (e: any) => {
+    setStatus(e.target.value);
+  };
+
   return (
     <div>
       <TextField
         fullWidth
         label="Search"
+        value={search}
+        onChange={searchHandler}
         className="my-3"
         id="fullWidth "
         InputProps={{
@@ -38,6 +52,8 @@ function Filters() {
           row
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
+          onChange={statusSelectedHandler}
+          value={status}
           defaultValue="all"
         >
           <FormControlLabel value="all" control={<Radio />} label="All" />
@@ -53,10 +69,21 @@ function Filters() {
         multiple
         className="my-3"
         limitTags={3}
+        value={priority}
+        onChange={(event, newValue) => {
+          console.log("newValue", newValue);
+          const nextValue: priotityType[] = [];
+          newValue.forEach((val) => {
+            val == "high" && nextValue.push("high");
+            val == "low" && nextValue.push("low");
+            val == "medium" && nextValue.push("medium");
+          });
+          setPriority(nextValue);
+        }}
         id="multiple-limit-tags"
-        options={top100Films}
-        getOptionLabel={(option) => option.title}
-        renderInput={(params) => (
+        options={priorities}
+        getOptionLabel={(option: string) => option}
+        renderInput={(params: any) => (
           <TextField {...params} label="Priority" placeholder="Favorites" />
         )}
       />
@@ -64,6 +91,6 @@ function Filters() {
   );
 }
 
-const top100Films = [{ title: "High" }, { title: "Medium" }, { title: "Low" }];
+const priorities = ["high", "medium", "low"];
 
 export default Filters;

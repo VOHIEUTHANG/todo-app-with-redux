@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  FormGroup,
   TextField,
   Button,
   FormControl,
@@ -15,7 +14,7 @@ import { v4 as uuid } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { addTodo } from "../redux/actions";
 
-import { priotityType, stateType } from "../interface/type";
+import { priotityType, todoType } from "../interface/type";
 import { todoListSelector } from "../redux/selectors";
 
 function Todos() {
@@ -23,7 +22,6 @@ function Todos() {
   const [todo, setTodo] = useState<string>("");
   const [priority, setPriority] = useState<priotityType>("high");
   const todoList = useSelector(todoListSelector);
-  console.log(todoList);
 
   const selectPriorityHandler = (e: SelectChangeEvent) => {
     const currentValue = e.target.value;
@@ -37,47 +35,43 @@ function Todos() {
   };
 
   const addTodoHandler = () => {
-    const payload = {
+    const payload: todoType = {
       id: uuid(),
       name: todo,
       priority: priority,
       completed: false,
     };
-    console.log(payload);
+
     dispatch(addTodo(payload));
+    setTodo("");
+    setPriority("medium");
   };
 
   return (
     <div className="flex flex-col h-full ">
       <div className="flex-1">
         <ul>
-          <li className="flex justify-between mb-4">
-            <FormControlLabel
-              control={<Checkbox defaultChecked />}
-              label="Learn React"
-            />
-            <div className="flex shadow-lg rounded-md p-2 bg-yellow-200">
-              Medium
-            </div>
-          </li>
-          <li className="flex justify-between mb-4">
-            <FormControlLabel
-              control={<Checkbox defaultChecked />}
-              label="Learn React"
-            />
-            <div className="flex shadow-lg rounded-md p-2  bg-red-200">
-              High
-            </div>
-          </li>
-          <li className="flex justify-between mb-4">
-            <FormControlLabel
-              control={<Checkbox defaultChecked />}
-              label="Learn React"
-            />
-            <div className="flex shadow-lg rounded-md p-2 bg-green-200">
-              Low
-            </div>
-          </li>
+          {todoList.map((todo) => {
+            return (
+              <li key={todo.id} className="flex justify-between mb-4">
+                <FormControlLabel
+                  control={<Checkbox defaultChecked={todo.completed} />}
+                  label={todo.name}
+                />
+                <div
+                  className={`flex shadow-lg rounded-md p-2 bg-${
+                    todo.priority === "high"
+                      ? "red"
+                      : todo.priority === "medium"
+                      ? "yellow"
+                      : "green"
+                  }-200`}
+                >
+                  {todo.priority}
+                </div>
+              </li>
+            );
+          })}
         </ul>
       </div>
       <div className="flex-grow-0 flex">
