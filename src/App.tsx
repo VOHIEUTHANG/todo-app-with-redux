@@ -6,7 +6,7 @@ import Todos from "./components/Todos";
 import "./App.css";
 function App() {
   return (
-    <div className="App w-[600px] my-4 mx-auto  flex flex-col uppercase bg-white p-[20px] shadow-xl rounded-sm h-[90vh]">
+    <div className="App w-[560px] my-4 mx-auto  flex flex-col uppercase bg-white p-[20px] shadow-xl rounded-sm h-[90vh]">
       <Typography
         className="text-center text-blue-400 font-bold mb-2"
         variant="h4"

@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import {
   FormGroup,
   TextField,
@@ -10,11 +10,41 @@ import {
   MenuItem,
 } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { v4 as uuid } from "uuid";
+
+import { useDispatch, useSelector } from "react-redux";
+import { addTodo } from "../redux/actions";
+
+import { priotityType, stateType } from "../interface/type";
+import { todoListSelector } from "../redux/selectors";
 
 function Todos() {
-  const [age, setAge] = React.useState("");
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
+  const dispatch = useDispatch();
+  const [todo, setTodo] = useState<string>("");
+  const [priority, setPriority] = useState<priotityType>("high");
+  const todoList = useSelector(todoListSelector);
+  console.log(todoList);
+
+  const selectPriorityHandler = (e: SelectChangeEvent) => {
+    const currentValue = e.target.value;
+    let newState: priotityType =
+      currentValue == "high"
+        ? "high"
+        : currentValue == "low"
+        ? "low"
+        : "medium";
+    setPriority(newState);
+  };
+
+  const addTodoHandler = () => {
+    const payload = {
+      id: uuid(),
+      name: todo,
+      priority: priority,
+      completed: false,
+    };
+    console.log(payload);
+    dispatch(addTodo(payload));
   };
 
   return (
@@ -51,16 +81,35 @@ function Todos() {
         </ul>
       </div>
       <div className="flex-grow-0 flex">
-        <TextField size="medium" fullWidth label="fullWidth" id="fullWidth" />
+        <TextField
+          value={todo}
+          onChange={(e) => {
+            setTodo(e.target.value);
+          }}
+          size="medium"
+          fullWidth
+          label="todo"
+          id="fullWidth"
+        />
         <FormControl sx={{ width: "200px", marginLeft: "10px" }}>
           <InputLabel id="priority">Priority</InputLabel>
-          <Select labelId="priority" id="select-priority" label="Priority">
+          <Select
+            value={priority}
+            onChange={selectPriorityHandler}
+            labelId="priority"
+            id="select-priority"
+            label="Priority"
+          >
             <MenuItem value={"high"}>High</MenuItem>
             <MenuItem value={"medium"}>Medium</MenuItem>
             <MenuItem value={"low"}>Low</MenuItem>
           </Select>
         </FormControl>
-        <Button className="flex-grow-0 px-8 ml-2" variant="contained">
+        <Button
+          onClick={addTodoHandler}
+          className="flex-grow-0 px-8 ml-2"
+          variant="contained"
+        >
           Add
         </Button>
       </div>
