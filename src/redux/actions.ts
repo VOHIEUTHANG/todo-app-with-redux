@@ -18,3 +18,13 @@ export const priorityTodo = (payload: priotityType[]) => ({
   type: "filters/priorityTodo",
   payload,
 });
+
+export const completedTodo = (payload: { id: string; completed: boolean }) => ({
+  type: "todoList/changeCompleted",
+  payload,
+});
+
+export const deleteTodo = (payload: { id: string }) => ({
+  type: "todoList/deleteTodo",
+  payload,
+});

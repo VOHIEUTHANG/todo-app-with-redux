@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   TextField,
   Button,
+  Box,
   FormControl,
   Checkbox,
   FormControlLabel,
   InputLabel,
   MenuItem,
+  IconButton,
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useTheme } from "@mui/material/styles";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { v4 as uuid } from "uuid";
 
@@ -15,13 +19,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { addTodo } from "../redux/actions";
 
 import { priotityType, todoType } from "../interface/type";
-import { todoListSelector } from "../redux/selectors";
+import { todoRemainingSelector } from "../redux/selectors";
+import { completedTodo, deleteTodo } from "../redux/actions";
 
 function Todos() {
+  // Material UI theme
   const dispatch = useDispatch();
   const [todo, setTodo] = useState<string>("");
   const [priority, setPriority] = useState<priotityType>("high");
-  const todoList = useSelector(todoListSelector);
+
+  let todoList = useSelector(todoRemainingSelector);
 
   const selectPriorityHandler = (e: SelectChangeEvent) => {
     const currentValue = e.target.value;
@@ -32,6 +39,20 @@ function Todos() {
         ? "low"
         : "medium";
     setPriority(newState);
+  };
+
+  const changeCompletedHandler = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    id: string
+  ) => {
+    dispatch(completedTodo({ id, completed: event.target.checked }));
+  };
+
+  const delteTodoHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    id: string
+  ) => {
+    dispatch(deleteTodo({ id }));
   };
 
   const addTodoHandler = () => {
@@ -53,22 +74,53 @@ function Todos() {
         <ul>
           {todoList.map((todo) => {
             return (
-              <li key={todo.id} className="flex justify-between mb-4">
-                <FormControlLabel
-                  control={<Checkbox defaultChecked={todo.completed} />}
-                  label={todo.name}
-                />
-                <div
-                  className={`flex shadow-lg rounded-md p-2 ${
-                    todo.priority === "high"
-                      ? "bg-red-200"
-                      : todo.priority === "medium"
-                      ? "bg-yellow-200"
-                      : "bg-green-200"
-                  }`}
+              <li key={todo.id} className="">
+                <Box
+                  className="flex justify-between mb-4"
+                  sx={{
+                    "&:hover": {
+                      "& .removeBtn": {
+                        visibility: "visible !important",
+                        opacity: "1 !important",
+                      },
+                    },
+                  }}
                 >
-                  {todo.priority}
-                </div>
+                  <FormControlLabel
+                    className={`${
+                      todo.completed && "text-gray-300 line-through"
+                    }`}
+                    control={
+                      <Checkbox
+                        onChange={(e) => {
+                          changeCompletedHandler(e, todo.id);
+                        }}
+                        checked={todo.completed}
+                      />
+                    }
+                    label={todo.name}
+                  />
+                  <IconButton
+                    onClick={(e) => {
+                      delteTodoHandler(e, todo.id);
+                    }}
+                    className="removeBtn xxx invisible opacity-0 transition ease-in-out ml-auto"
+                    aria-label="delete"
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                  <div
+                    className={`flex shadow-lg rounded-md ml-2 p-2 ${
+                      todo.priority === "high"
+                        ? "bg-red-200"
+                        : todo.priority === "medium"
+                        ? "bg-yellow-200"
+                        : "bg-green-200"
+                    } ${todo.completed && "opacity-50 line-through"}`}
+                  >
+                    {todo.priority}
+                  </div>
+                </Box>
               </li>
             );
           })}
