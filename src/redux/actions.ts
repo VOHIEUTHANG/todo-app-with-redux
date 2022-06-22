@@ -23,3 +23,8 @@ export const completedTodo = (payload: { id: string; completed: boolean }) => ({
   type: "todoList/changeCompleted",
   payload,
 });
+
+export const deleteTodo = (payload: { id: string }) => ({
+  type: "todoList/deleteTodo",
+  payload,
+});

@@ -1,3 +1,4 @@
+import { AttractionsRounded } from "@mui/icons-material";
 import { todoType } from "../../interface/type";
 const initState: todoType[] = [
   { id: "1", name: "Learn React", priority: "high", completed: true },
@@ -19,11 +20,9 @@ const todoListReducer = (
         }
         return todo;
       });
-      console.log(
-        "🚀 ~ file: todoListReducer.ts ~ line 26 ~ newState",
-        newState
-      );
       return newState;
+    case "todoList/deleteTodo":
+      return state.filter((todo) => todo.id !== actions.payload.id);
     default:
       return state;
   }

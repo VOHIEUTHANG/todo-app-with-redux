@@ -11,7 +11,6 @@ export type todoType = {
   priority: priotityType;
   completed: boolean;
 };
-
 export type stateType = {
   filters: filterType;
   todoList: todoType[];

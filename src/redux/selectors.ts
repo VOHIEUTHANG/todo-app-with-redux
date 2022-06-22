@@ -12,7 +12,6 @@ export const todoRemainingSelector = createSelector(
   statusSelector,
   priotirySelector,
   (todoList, search, status, priotiry) => {
-    console.log(todoList, search, status, priotiry);
     const todoRemaining = todoList.filter((todo) => {
       const searchCondition = todo.name
         .toLowerCase()

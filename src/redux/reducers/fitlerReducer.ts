@@ -1,4 +1,5 @@
 import { filterType } from "../../interface/type";
+import { createSlice } from "@reduxjs/toolkit";
 const initState = {
   search: "",
   status: "low",
