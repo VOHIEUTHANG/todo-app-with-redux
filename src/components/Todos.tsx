@@ -27,13 +27,8 @@ function Todos() {
   const dispatch = useDispatch();
   const [todo, setTodo] = useState<string>("");
   const [priority, setPriority] = useState<priotityType>("high");
+
   let todoList = useSelector(todoRemainingSelector);
-
-  const [todolist, setTodolist] = useState<todoType[]>(todoList);
-
-  useEffect(() => {
-    localStorage.setItem("todoList", JSON.stringify(todoList));
-  }, [todolist]);
 
   const selectPriorityHandler = (e: SelectChangeEvent) => {
     const currentValue = e.target.value;
@@ -58,9 +53,6 @@ function Todos() {
     id: string
   ) => {
     dispatch(deleteTodo({ id }));
-    setTodolist((prev) => {
-      return prev.filter((todo) => todo.id !== id);
-    });
   };
 
   const addTodoHandler = () => {
@@ -72,9 +64,6 @@ function Todos() {
     };
 
     dispatch(addTodo(payload));
-    setTodolist((prev: todoType[]) => {
-      return [...prev, payload];
-    });
     setTodo("");
     setPriority("medium");
   };
