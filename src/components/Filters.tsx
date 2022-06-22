@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useDispatch } from "react-redux";
-
+import { searchTodo, statusTodo, priorityTodo } from "../redux/actions";
 import { statusType, priotityType } from "../interface/type";
 
 function Filters() {
@@ -22,9 +22,26 @@ function Filters() {
 
   const searchHandler = (e: any) => {
     setSearch(e.target.value);
+    dispatch(searchTodo(e.target.value));
   };
   const statusSelectedHandler = (e: any) => {
     setStatus(e.target.value);
+    dispatch(statusTodo(e.target.value));
+  };
+
+  const selectPriorityHandler = (
+    event: React.SyntheticEvent<Element, Event>,
+    newValue: string[]
+  ) => {
+    console.log("newValue", newValue);
+    const nextValue: priotityType[] = [];
+    newValue.forEach((val) => {
+      val === "high" && nextValue.push("high");
+      val === "low" && nextValue.push("low");
+      val === "medium" && nextValue.push("medium");
+    });
+    setPriority(nextValue);
+    dispatch(priorityTodo(nextValue));
   };
 
   return (
@@ -70,16 +87,7 @@ function Filters() {
         className="my-3"
         limitTags={3}
         value={priority}
-        onChange={(event, newValue) => {
-          console.log("newValue", newValue);
-          const nextValue: priotityType[] = [];
-          newValue.forEach((val) => {
-            val == "high" && nextValue.push("high");
-            val == "low" && nextValue.push("low");
-            val == "medium" && nextValue.push("medium");
-          });
-          setPriority(nextValue);
-        }}
+        onChange={selectPriorityHandler}
         id="multiple-limit-tags"
         options={priorities}
         getOptionLabel={(option: string) => option}

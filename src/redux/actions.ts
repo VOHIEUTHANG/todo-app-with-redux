@@ -1,11 +1,20 @@
-import { priotityType, todoType, filterType } from "../interface/type";
+import { priotityType, todoType, statusType } from "../interface/type";
 
 export const addTodo = (payload: todoType) => ({
   type: "todoList/addTodo",
   payload,
 });
 
-export const addFilter = (payload: filterType) => ({
-  type: "filters/addFilter",
+export const searchTodo = (payload: string) => ({
+  type: "filters/searchTodo",
+  payload,
+});
+
+export const statusTodo = (payload: statusType) => ({
+  type: "filters/statusTodo",
+  payload,
+});
+export const priorityTodo = (payload: priotityType[]) => ({
+  type: "filters/priorityTodo",
   payload,
 });
