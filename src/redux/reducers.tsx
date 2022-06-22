@@ -1,4 +1,3 @@
-import { filterType } from "../interface/type";
 const initState = {
   filters: {
     search: "",
@@ -22,7 +21,21 @@ const reducers = (
         ...state,
         todoList: [...state.todoList, actions.payload],
       };
-    case "todoList/removeTodo":
+    case "filters/searchTodo":
+      return {
+        ...state,
+        filters: { ...state.filters, search: actions.payload },
+      };
+    case "filters/statusTodo":
+      return {
+        ...state,
+        filters: { ...state.filters, status: actions.payload },
+      };
+    case "filters/priorityTodo":
+      return {
+        ...state,
+        filters: { ...state.filters, priority: actions.payload },
+      };
     default:
       return state;
   }

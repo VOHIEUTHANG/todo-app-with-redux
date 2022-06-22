@@ -26,9 +26,9 @@ function Todos() {
   const selectPriorityHandler = (e: SelectChangeEvent) => {
     const currentValue = e.target.value;
     let newState: priotityType =
-      currentValue == "high"
+      currentValue === "high"
         ? "high"
-        : currentValue == "low"
+        : currentValue === "low"
         ? "low"
         : "medium";
     setPriority(newState);
@@ -59,13 +59,13 @@ function Todos() {
                   label={todo.name}
                 />
                 <div
-                  className={`flex shadow-lg rounded-md p-2 bg-${
+                  className={`flex shadow-lg rounded-md p-2 ${
                     todo.priority === "high"
-                      ? "red"
+                      ? "bg-red-200"
                       : todo.priority === "medium"
-                      ? "yellow"
-                      : "green"
-                  }-200`}
+                      ? "bg-yellow-200"
+                      : "bg-green-200"
+                  }`}
                 >
                   {todo.priority}
                 </div>
