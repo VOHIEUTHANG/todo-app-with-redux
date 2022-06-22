@@ -15,13 +15,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { addTodo } from "../redux/actions";
 
 import { priotityType, todoType } from "../interface/type";
-import { todoListSelector } from "../redux/selectors";
+import { todoRemainingSelector } from "../redux/selectors";
+import { completedTodo } from "../redux/actions";
 
 function Todos() {
   const dispatch = useDispatch();
   const [todo, setTodo] = useState<string>("");
   const [priority, setPriority] = useState<priotityType>("high");
-  const todoList = useSelector(todoListSelector);
+  const todoList = useSelector(todoRemainingSelector);
 
   const selectPriorityHandler = (e: SelectChangeEvent) => {
     const currentValue = e.target.value;
@@ -32,6 +33,13 @@ function Todos() {
         ? "low"
         : "medium";
     setPriority(newState);
+  };
+
+  const changeCompletedHandler = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    id: string
+  ) => {
+    dispatch(completedTodo({ id, completed: event.target.checked }));
   };
 
   const addTodoHandler = () => {
@@ -55,7 +63,17 @@ function Todos() {
             return (
               <li key={todo.id} className="flex justify-between mb-4">
                 <FormControlLabel
-                  control={<Checkbox defaultChecked={todo.completed} />}
+                  className={`${
+                    todo.completed && "text-gray-300 line-through"
+                  }`}
+                  control={
+                    <Checkbox
+                      onChange={(e) => {
+                        changeCompletedHandler(e, todo.id);
+                      }}
+                      checked={todo.completed}
+                    />
+                  }
                   label={todo.name}
                 />
                 <div
@@ -65,7 +83,7 @@ function Todos() {
                       : todo.priority === "medium"
                       ? "bg-yellow-200"
                       : "bg-green-200"
-                  }`}
+                  } ${todo.completed && "opacity-50 line-through"}`}
                 >
                   {todo.priority}
                 </div>

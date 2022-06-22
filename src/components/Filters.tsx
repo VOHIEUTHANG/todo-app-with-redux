@@ -75,7 +75,7 @@ function Filters() {
         >
           <FormControlLabel value="all" control={<Radio />} label="All" />
           <FormControlLabel
-            value="compoleted"
+            value="completed"
             control={<Radio />}
             label="Completed"
           />
@@ -92,7 +92,7 @@ function Filters() {
         options={priorities}
         getOptionLabel={(option: string) => option}
         renderInput={(params: any) => (
-          <TextField {...params} label="Priority" placeholder="Favorites" />
+          <TextField {...params} label="Priority" placeholder="high" />
         )}
       />
     </div>
